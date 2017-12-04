@@ -1,0 +1,11 @@
+{
+  "name": "pica",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "canon": "../canon",
+    "fluture": "^7.2.2",
+    "paragon": "../paragon"
+  }
+}

@@ -1,0 +1,33 @@
+#!/usr/bin/env node
+
+'use strict';
+
+const program = require('commander');
+const deps2dot = require('../src/index');
+const list = val => val.split(',');
+
+let basePath;
+
+program
+  .version('0.0.1')
+  .arguments('<path>')
+  .option('-i, --ignore <directories>', 'A list of directories to ignore (default: ', list)
+  .action(path => { basePath = path })
+  .parse(process.argv);
+
+if (!basePath) {
+  console.error('no path given!');
+  program.outputHelp();
+  process.exit(1);
+}
+
+const opts = {
+    ignoreDirs: program.ignore || ['node_modules']
+}
+
+deps2dot(basePath, opts)
+  .then(console.log)
+  .catch(err => {
+    console.error(err.message);
+    process.exit(1);
+  });

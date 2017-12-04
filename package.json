@@ -1,0 +1,11 @@
+{
+  "name": "deps2dot",
+  "version": "0.0.1",
+  "main": "src/index.js",
+  "bin": "bin/deps2dot",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^2.12.2",
+    "graphviz": "^0.0.8"
+  }
+}

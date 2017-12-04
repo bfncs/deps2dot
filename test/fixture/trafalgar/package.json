@@ -1,0 +1,10 @@
+{
+  "name": "trafalgar",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "canon": "../canon",
+    "pica": "../pica"
+  }
+}
