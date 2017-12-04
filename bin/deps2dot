@@ -9,7 +9,7 @@ const list = val => val.split(',');
 let basePath;
 
 program
-  .version('0.0.1')
+  .version('0.0.2')
   .arguments('<path>')
   .option('-i, --ignore <directories>', 'A list of directories to ignore (default: ', list)
   .action(path => { basePath = path })

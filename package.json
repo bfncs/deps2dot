@@ -1,9 +1,15 @@
 {
   "name": "deps2dot",
-  "version": "0.0.1",
+  "version": "0.0.2",
+  "description": "Build Graphviz dot files from package dependencies",
+  "license": "MIT",
   "main": "src/index.js",
   "bin": "bin/deps2dot",
-  "license": "MIT",
+  "files": [
+    "bin",
+    "src"
+  ],
+  "repository": "bfncs/deps2dot",
   "dependencies": {
     "commander": "^2.12.2",
     "graphviz": "^0.0.8"
