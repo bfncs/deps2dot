@@ -24,4 +24,16 @@ const findPackageJsonFiles = (dir, ignoreDirs = []) =>
     ).then(flatten)
   );
 
-module.exports = findPackageJsonFiles;
+const buildDependencyMap = packageJsonFilePaths =>
+  packageJsonFilePaths.map(require).reduce(
+    (acc, { name, dependencies = {} }) => ({
+      ...acc,
+      [name]: Object.keys(dependencies),
+    }),
+    {}
+  );
+
+module.exports = {
+  findPackageJsonFiles,
+  buildDependencyMap,
+};
