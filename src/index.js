@@ -13,15 +13,32 @@ const buildDependencyMap = packageJsonFilePaths =>
     {}
   );
 
-const buildGraph = dependencyMap => {
-  const nodes = Object.keys(dependencyMap);
-  const edges = flatMap(
+const findEdges = dependencyMap =>
+  flatMap(
     ([node, dependencies]) =>
-      dependencies.filter(d => nodes.includes(d)).map(d => [node, d]),
+      dependencies
+        .filter(d => Object.keys(dependencyMap).includes(d))
+        .map(d => [node, d]),
     Object.entries(dependencyMap)
   );
-  return { nodes, edges };
-};
+
+const buildUsedNodes = edges =>
+  edges.reduce(
+    (acc, edgeNodes) => [
+      ...acc,
+      ...edgeNodes.filter(edge => !acc.includes(edge)),
+    ],
+    []
+  );
+
+const createGraphBuilder = (
+  includeIndependentNodes = false
+) => dependencyMap => ({
+  nodes: includeIndependentNodes
+    ? Object.keys(dependencyMap)
+    : buildUsedNodes(findEdges(dependencyMap)),
+  edges: findEdges(dependencyMap),
+});
 
 const buildGraphViz = ({ nodes, edges }) => {
   const g = graphviz.digraph('G');
@@ -41,9 +58,16 @@ const buildGraphViz = ({ nodes, edges }) => {
   return g.to_dot();
 };
 
-const deps2dot = (path, { ignoreDirs = defaultIgnoreDirs } = {}) =>
+const deps2dot = (
+  path,
+  { ignoreDirs = defaultIgnoreDirs, includeIndependentNodes = false } = {}
+) =>
   findPackageJsonFiles(path, ignoreDirs).then(
-    compose(buildGraphViz, buildGraph, buildDependencyMap)
+    compose(
+      buildGraphViz,
+      createGraphBuilder(includeIndependentNodes),
+      buildDependencyMap
+    )
   );
 
 module.exports = deps2dot;

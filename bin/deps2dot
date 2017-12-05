@@ -12,6 +12,7 @@ program
   .version('0.0.2')
   .arguments('<path>')
   .option('-i, --ignore <directories>', 'A list of directories to ignore (default: ', list)
+  .option('-a, --all', 'Include all modules, even with no dependencies to or from')
   .action(path => { basePath = path })
   .parse(process.argv);
 
@@ -22,8 +23,9 @@ if (!basePath) {
 }
 
 const opts = {
-    ignoreDirs: program.ignore || ['node_modules']
-}
+    ignoreDirs: program.ignore || ['node_modules'],
+    includeIndependentNodes: program.all,
+};
 
 deps2dot(basePath, opts)
   .then(console.log)
