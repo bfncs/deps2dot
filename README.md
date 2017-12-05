@@ -1,5 +1,7 @@
 # deps2dot
 
+[![Build Status](https://travis-ci.org/bfncs/deps2dot.svg?branch=master)](https://travis-ci.org/bfncs/deps2dot)
+
 CLI tool to build Graphviz dot files from package dependencies.
 
 ## Install
