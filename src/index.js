@@ -1,34 +1,30 @@
 const graphviz = require('graphviz');
-const findPackageJsonFiles = require("./findPackageJsonFiles");
-const { compose, flatMap } = require("./utils");
+const findPackageJsonFiles = require('./findPackageJsonFiles');
+const { compose, flatMap } = require('./utils');
 
-const defaultIgnoreDirs = ["node_modules"];
+const defaultIgnoreDirs = ['node_modules'];
 
 const buildDependencyMap = packageJsonFilePaths =>
-  packageJsonFilePaths
-    .map(require)
-    .reduce(
-      (acc, { name, dependencies = {} }) => ({
-        ...acc,
-        [name]: Object.keys(dependencies)
-      }),
-      {}
-    );
+  packageJsonFilePaths.map(require).reduce(
+    (acc, { name, dependencies = {} }) => ({
+      ...acc,
+      [name]: Object.keys(dependencies),
+    }),
+    {}
+  );
 
 const buildGraph = dependencyMap => {
   const nodes = Object.keys(dependencyMap);
   const edges = flatMap(
-    ([ node, dependencies ]) =>
-      dependencies
-        .filter(d => nodes.includes(d))
-        .map(d => [node, d]),
+    ([node, dependencies]) =>
+      dependencies.filter(d => nodes.includes(d)).map(d => [node, d]),
     Object.entries(dependencyMap)
   );
   return { nodes, edges };
 };
 
 const buildGraphViz = ({ nodes, edges }) => {
-  const g = graphviz.digraph("G");
+  const g = graphviz.digraph('G');
 
   const graphNodes = nodes.reduce(
     (acc, node) => ({
@@ -46,7 +42,8 @@ const buildGraphViz = ({ nodes, edges }) => {
 };
 
 const deps2dot = (path, { ignoreDirs = defaultIgnoreDirs } = {}) =>
-  findPackageJsonFiles(path, ignoreDirs)
-    .then(compose(buildGraphViz, buildGraph, buildDependencyMap));
+  findPackageJsonFiles(path, ignoreDirs).then(
+    compose(buildGraphViz, buildGraph, buildDependencyMap)
+  );
 
 module.exports = deps2dot;

@@ -2,16 +2,25 @@
   "name": "deps2dot",
   "version": "0.0.2",
   "description": "Build Graphviz dot files from package dependencies",
+  "repository": "bfncs/deps2dot",
   "license": "MIT",
   "main": "src/index.js",
   "bin": "bin/deps2dot",
-  "files": [
-    "bin",
-    "src"
-  ],
-  "repository": "bfncs/deps2dot",
+  "files": ["bin", "src"],
+  "scripts": {
+    "format": "prettier --write ./src/**/*",
+    "precommit": "lint-staged"
+  },
   "dependencies": {
     "commander": "^2.12.2",
     "graphviz": "^0.0.8"
+  },
+  "devDependencies": {
+    "husky": "^0.14.3",
+    "lint-staged": "^6.0.0",
+    "prettier": "^1.9.0"
+  },
+  "lint-staged": {
+    "*.{js,json,css}": ["prettier --write", "git add"]
   }
 }
